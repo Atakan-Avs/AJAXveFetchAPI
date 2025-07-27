@@ -1,61 +1,61 @@
 // API URL
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-// DOM elementleri
+// DOM elements
 const postsList = document.getElementById('postsList');
 const postForm = document.getElementById('postForm');
 const refreshBtn = document.getElementById('refreshBtn');
 const loading = document.getElementById('loading');
 const error = document.getElementById('error');
 
-// Sayfa yüklendiğinde postları getir
+// Fetch posts when page loads
 document.addEventListener('DOMContentLoaded', () => {
     fetchPosts();
-    
-    // Event listenerları ekle
+
+    // Add event listeners
     postForm.addEventListener('submit', handlePostSubmit);
     refreshBtn.addEventListener('click', fetchPosts);
 });
 
-// POSTları getir (GET işlemi)
+// Fetch posts (GET request)
 async function fetchPosts() {
     showLoading();
     hideError();
-    
+
     try {
         const response = await fetch(API_URL);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const posts = await response.json();
-        displayPosts(posts.slice(0, 5)); // İlk 5 postu göster
+        displayPosts(posts.slice(0, 5)); // Show first 5 posts
         hideLoading();
-        
+
     } catch (err) {
-        console.error('Ürün getirme hatası:', err);
-        showError('Veriler yüklenirken bir hata oluştu.');
+        console.error('Error fetching products:', err);
+        showError('An error occurred while loading the data.');
         hideLoading();
     }
 }
 
-// Postları görüntüle
+// Display posts
 function displayPosts(posts) {
     postsList.innerHTML = '';
-    
+
     if (posts.length === 0) {
-        postsList.innerHTML = '<p class="no-posts">Henüz ürün bulunmuyor.</p>';
+        postsList.innerHTML = '<p class="no-posts">No products available yet.</p>';
         return;
     }
-    
+
     posts.forEach(post => {
         const postElement = createPostElement(post);
         postsList.appendChild(postElement);
     });
 }
 
-// Post elementi oluştur
+// Create post element
 function createPostElement(post) {
     const postDiv = document.createElement('div');
     postDiv.className = 'post-card';
@@ -64,41 +64,41 @@ function createPostElement(post) {
             <div>
                 <div class="post-title">${escapeHtml(post.title)}</div>
                 <div class="post-body">${escapeHtml(post.body)}</div>
-                ${post.price ? `<div class="post-price"><strong>Fiyat:</strong> ${escapeHtml(post.price)} ₺</div>` : ''}
+                ${post.price ? `<div class="post-price"><strong>Price:</strong> ${escapeHtml(post.price)} ₺</div>` : ''}
             </div>
             <span class="post-id">#${post.id}</span>
         </div>
         <div class="post-actions">
             <button type="button" class="btn btn-danger" onclick="deletePost(${post.id})">
-                🗑️ Sil
+                🗑️ Delete
             </button>
         </div>
     `;
-    
+
     return postDiv;
 }
 
-// Yeni post ekle (POST işlemi)
+// Add new post (POST request)
 async function handlePostSubmit(event) {
     event.preventDefault();
-    
+
     const formData = new FormData(postForm);
     const title = formData.get('title').trim();
     const body = formData.get('body').trim();
-    const price = formData.get('price');  // trim yok, number input için
-    
+    const price = formData.get('price'); // no trim, it's a number input
+
     if (!title || !body) {
-        showError('Lütfen başlık ve içerik alanlarını doldurun.');
+        showError('Please fill in both the title and content fields.');
         return;
     }
-    
+
     const postData = {
         title: title,
         body: body,
         price: price,
-        userId: 1 // JSONPlaceholder için sabit user ID
+        userId: 1 // fixed user ID for JSONPlaceholder
     };
-    
+
     try {
         const response = await fetch(API_URL, {
             method: 'POST',
@@ -107,48 +107,48 @@ async function handlePostSubmit(event) {
             },
             body: JSON.stringify(postData)
         });
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const newPost = await response.json();
-        
+
         postForm.reset();
-        showSuccessMessage('Ürün başarıyla eklendi!');
+        showSuccessMessage('Product successfully added!');
         fetchPosts();
-        
+
     } catch (err) {
-        console.error('Ürün ekleme hatası:', err);
-        showError('Ürün eklenirken bir hata oluştu.');
+        console.error('Error adding product:', err);
+        showError('An error occurred while adding the product.');
     }
 }
 
-// Post sil (DELETE işlemi) — GLOBAL yapınca onclick calısıyor
+// Delete post (DELETE request) — works globally with onclick
 window.deletePost = async function(postId) {
-    if (!confirm(`Ürün #${postId} silmek istediğinizden emin misiniz?`)) {
+    if (!confirm(`Are you sure you want to delete product #${postId}?`)) {
         return;
     }
-    
+
     try {
         const response = await fetch(`${API_URL}/${postId}`, {
             method: 'DELETE'
         });
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
-        showSuccessMessage(`Ürün #${postId} başarıyla silindi!`);
+
+        showSuccessMessage(`Product #${postId} successfully deleted!`);
         fetchPosts();
-        
+
     } catch (err) {
-        console.error('Ürün silme hatası:', err);
-        showError('Ürün silinirken bir hata oluştu.');
+        console.error('Error deleting product:', err);
+        showError('An error occurred while deleting the product.');
     }
 };
 
-// Yardımcı fonksiyonlar
+// Helper functions
 function showLoading() {
     loading.classList.remove('hidden');
     postsList.innerHTML = '';
@@ -170,14 +170,14 @@ function hideError() {
 function showSuccessMessage(message) {
     const existingMessage = document.querySelector('.success-message');
     if (existingMessage) existingMessage.remove();
-    
+
     const successDiv = document.createElement('div');
     successDiv.className = 'success-message';
     successDiv.innerHTML = `<p>✅ ${message}</p>`;
-    
+
     const formSection = document.querySelector('.form-section');
     formSection.insertBefore(successDiv, formSection.firstChild);
-    
+
     setTimeout(() => {
         if (successDiv.parentNode) successDiv.remove();
     }, 3000);
@@ -189,10 +189,10 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Tema Değiştirici
+// Theme Toggle
 const themeToggle = document.getElementById('themeToggle');
 
-// Sayfa yüklendiğinde localStorage'dan temayı uygula
+// Apply theme from localStorage when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -201,10 +201,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Butona tıklanınca tema değiştir
+// Toggle theme on button click
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
-    
+
     if (document.body.classList.contains('dark')) {
         localStorage.setItem('theme', 'dark');
         themeToggle.textContent = '☀️ Light Mode';
@@ -213,4 +213,3 @@ themeToggle.addEventListener('click', () => {
         themeToggle.textContent = '🌙 Dark Mode';
     }
 });
-
