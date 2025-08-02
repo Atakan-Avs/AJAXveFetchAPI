@@ -21,6 +21,7 @@ This project demonstrates the use of **AJAX** (Asynchronous JavaScript and XML) 
 _Add screenshots here (e.g., network call in browser, DOM updates, etc.)_
 
 ## 📂 Project Structure
+
 AJAXveFetchAPI/
 │
 ├── index.html # Main HTML file
@@ -28,6 +29,8 @@ AJAXveFetchAPI/
 ├── fetch.js # JavaScript using Fetch API
 ├── ajax.js # JavaScript using XMLHttpRequest
 └── README.md # Project documentation
+
+
 
 ## ▶️ How to Run Locally
 
@@ -37,6 +40,8 @@ No installation required. Just open `index.html` in your browser:
 git clone https://github.com/Atakan-Avs/AJAXveFetchAPI.git
 cd AJAXveFetchAPI
 open index.html
+
+
 
 🧠 What You'll Learn
 The difference between AJAX and Fetch API
@@ -53,3 +58,6 @@ Connect to a real API like JSONPlaceholder
 Add form input and send POST requests
 
 Use async/await for cleaner syntax
+
+📄 License
+This project is licensed under the MIT License.
