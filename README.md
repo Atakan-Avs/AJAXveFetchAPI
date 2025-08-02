@@ -22,15 +22,15 @@ _Add screenshots here (e.g., network call in browser, DOM updates, etc.)_
 
 ## 📂 Project Structure
 
+```
 AJAXveFetchAPI/
 │
-├── index.html # Main HTML file
-├── style.css # Styling file
-├── fetch.js # JavaScript using Fetch API
-├── ajax.js # JavaScript using XMLHttpRequest
-└── README.md # Project documentation
-
-
+├── index.html             # Main HTML file
+├── style.css              # Styling file
+├── fetch.js               # JavaScript using Fetch API
+├── ajax.js                # JavaScript using XMLHttpRequest
+└── README.md              # Project documentation
+```
 
 ## ▶️ How to Run Locally
 
@@ -40,24 +40,27 @@ No installation required. Just open `index.html` in your browser:
 git clone https://github.com/Atakan-Avs/AJAXveFetchAPI.git
 cd AJAXveFetchAPI
 open index.html
+```
 
+Or simply drag and drop the file into your browser.
 
+## 🧠 What You'll Learn
 
-🧠 What You'll Learn
-The difference between AJAX and Fetch API
+- The difference between `AJAX` and `Fetch API`
+- How to use `fetch()` for GET/POST requests
+- How to update UI dynamically with JavaScript
+- How to debug HTTP requests in the browser (DevTools > Network tab)
 
-How to use fetch() for GET/POST requests
+## 💡 Future Enhancements
 
-How to update UI dynamically with JavaScript
+- Connect to a real API like [JSONPlaceholder](https://jsonplaceholder.typicode.com/)
+- Add form input and send POST requests
+- Use `async/await` for cleaner syntax
 
-How to debug HTTP requests in the browser (DevTools > Network tab)
+## 📄 License
 
-💡 Future Enhancements
-Connect to a real API like JSONPlaceholder
-
-Add form input and send POST requests
-
-Use async/await for cleaner syntax
-
-📄 License
 This project is licensed under the MIT License.
+
+---
+
+_This project was built as a practice to strengthen my understanding of modern JavaScript and asynchronous operations using the Fetch API and AJAX._
